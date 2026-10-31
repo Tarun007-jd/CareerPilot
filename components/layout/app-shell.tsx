@@ -238,7 +238,7 @@ function Sidebar({
               <span className="block truncate text-[15px] font-semibold leading-none tracking-[-0.02em]">
                 CareerPilot <span className="text-primary">AI</span>
               </span>
-              <span className="mt-1 block text-[9px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
                 Career intelligence
               </span>
             </span>

@@ -366,7 +366,7 @@ export default function DashboardPage() {
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-2xl font-semibold tracking-[-0.04em]">{prep}%</span>
-                <span className="text-[9px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                <span className="text-[10px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
                   Prepared
                 </span>
               </div>
