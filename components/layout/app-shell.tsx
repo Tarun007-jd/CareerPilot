@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import {
   Bell,
@@ -9,7 +10,6 @@ import {
   BriefcaseBusiness,
   ChevronLeft,
   ChevronRight,
-  Compass,
   FileText,
   FolderKanban,
   LayoutDashboard,
@@ -54,17 +54,37 @@ interface NavItem {
   voice?: boolean;
 }
 
-const navItems: NavItem[] = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard, module: "01" },
-  { href: "/profile", label: "Career Profile", icon: UserRound, module: "02" },
-  { href: "/resume", label: "Resume Intelligence", icon: FileText, module: "03" },
-  { href: "/skill-gap", label: "Skill Gap Analysis", icon: Target, module: "04" },
-  { href: "/roadmap", label: "Learning Roadmap", icon: Route, module: "05" },
-  { href: "/projects", label: "Portfolio Projects", icon: FolderKanban, module: "06" },
-  { href: "/interview", label: "Mock Interview", icon: MessagesSquare, module: "07" },
-  { href: "/applications", label: "Application Tracker", icon: BriefcaseBusiness, module: "08" },
-  { href: "/assistant", label: "AI Assistant", icon: Sparkles, module: "09", voice: true },
-  { href: "/settings", label: "Settings", icon: Settings, module: "10" },
+const navGroups: { label: string; items: NavItem[] }[] = [
+  {
+    label: "Overview",
+    items: [
+      { href: "/", label: "Dashboard", icon: LayoutDashboard, module: "01" },
+    ],
+  },
+  {
+    label: "Career building",
+    items: [
+      { href: "/profile", label: "Career Profile", icon: UserRound, module: "02" },
+      { href: "/resume", label: "Resume Intelligence", icon: FileText, module: "03" },
+      { href: "/skill-gap", label: "Skill Gap Analysis", icon: Target, module: "04" },
+      { href: "/roadmap", label: "Learning Roadmap", icon: Route, module: "05" },
+    ],
+  },
+  {
+    label: "Practice & track",
+    items: [
+      { href: "/projects", label: "Portfolio Projects", icon: FolderKanban, module: "06" },
+      { href: "/interview", label: "Mock Interview", icon: MessagesSquare, module: "07" },
+      { href: "/applications", label: "Application Tracker", icon: BriefcaseBusiness, module: "08" },
+    ],
+  },
+  {
+    label: "Tools",
+    items: [
+      { href: "/assistant", label: "AI Assistant", icon: Sparkles, module: "09", voice: true },
+      { href: "/settings", label: "Settings", icon: Settings, module: "10" },
+    ],
+  },
 ];
 
 const pageTitles: Record<string, string> = {
@@ -87,15 +107,19 @@ function isActive(pathname: string, href: string) {
 
 function BrandMark() {
   return (
-    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-      <img
-        src="/logo.png"
-        alt="CareerPilot AI"
-        className="h-[19px] w-[19px] object-contain rounded-lg"
-        loading="lazy"
-        style={{ objectFit: 'contain' }}
-      />
-      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-400" />
+    <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-violet-500 to-sky-500 p-[3px] shadow-sm ring-1 ring-primary/15">
+      <span className="flex h-full w-full items-center justify-center rounded-[9px] bg-white/95">
+        <Image
+          src="/logo.png"
+          alt="CareerPilot AI"
+          width={18}
+          height={18}
+          className="h-[18px] w-[18px] object-contain"
+          loading="lazy"
+          priority
+        />
+      </span>
+      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-400 shadow-[0_0_0_2px_rgba(52,211,153,0.15)]" />
     </span>
   );
 }
@@ -109,63 +133,76 @@ function SidebarNav({
 }) {
   const pathname = usePathname();
   return (
-    <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
-      {!collapsed ? (
-        <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/70">
-          Workspace
-        </p>
-      ) : null}
-      {navItems.map((item) => {
-        const active = isActive(pathname, item.href);
-        const Icon = item.icon;
-        const link = (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "group relative flex h-10 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-colors",
-              active
-                ? "bg-accent text-accent-foreground"
-                : "text-muted-foreground hover:bg-muted/70 hover:text-foreground",
-              collapsed && "justify-center px-2",
-            )}
-          >
-            {active ? (
-              <span className="absolute -left-3 top-2 h-6 w-[3px] rounded-r-full bg-primary" />
-            ) : null}
-            <Icon
-              className={cn(
-                "h-[17px] w-[17px] shrink-0",
-                active ? "text-primary" : "text-muted-foreground/80",
-              )}
-              strokeWidth={active ? 2.15 : 1.9}
-            />
-            {!collapsed ? (
-              <>
-                <span className="truncate">{item.label}</span>
-                {item.voice ? (
-                  <span className="ml-auto rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-primary">
-                    Voice
-                  </span>
-                ) : (
-                  <span className="ml-auto text-[10px] text-muted-foreground/40">
-                    {item.module}
-                  </span>
+    <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-4">
+      {navGroups.map((group, groupIndex) => (
+        <div key={group.label} className="space-y-1">
+          {!collapsed ? (
+            <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/60">
+              {group.label}
+            </p>
+          ) : groupIndex > 0 ? (
+            <div className="mx-auto mb-2 h-px w-6 bg-border" />
+          ) : null}
+          {group.items.map((item) => {
+            const active = isActive(pathname, item.href);
+            const Icon = item.icon;
+            const link = (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onNavigate}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "group relative flex h-10 items-center gap-3 rounded-lg px-3 text-[13px] font-medium transition-all duration-200",
+                  active
+                    ? "bg-gradient-to-r from-primary/[0.12] via-primary/[0.06] to-transparent text-foreground shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.08)]"
+                    : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  collapsed && "justify-center px-2",
                 )}
-              </>
-            ) : null}
-          </Link>
-        );
-        if (!collapsed) return link;
-        return (
-          <Tooltip key={item.href}>
-            <TooltipTrigger asChild>{link}</TooltipTrigger>
-            <TooltipContent side="right">{item.label}</TooltipContent>
-          </Tooltip>
-        );
-      })}
+              >
+                {active ? (
+                  <span className="absolute -left-3 top-2 h-6 w-[3px] rounded-r-full bg-gradient-to-b from-primary to-sky-400" />
+                ) : null}
+                <Icon
+                  className={cn(
+                    "h-[17px] w-[17px] shrink-0 transition-colors",
+                    active
+                      ? "text-primary"
+                      : "text-muted-foreground/75 group-hover:text-foreground/70",
+                  )}
+                  strokeWidth={active ? 2.15 : 1.9}
+                />
+                {!collapsed ? (
+                  <>
+                    <span className="truncate">{item.label}</span>
+                    {item.voice ? (
+                      <span className="ml-auto rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-primary">
+                        Voice
+                      </span>
+                    ) : (
+                      <span
+                        className={cn(
+                          "ml-auto text-[10px] tabular-nums",
+                          active ? "text-primary/60" : "text-muted-foreground/35",
+                        )}
+                      >
+                        {item.module}
+                      </span>
+                    )}
+                  </>
+                ) : null}
+              </Link>
+            );
+            if (!collapsed) return link;
+            return (
+              <Tooltip key={item.href}>
+                <TooltipTrigger asChild>{link}</TooltipTrigger>
+                <TooltipContent side="right">{item.label}</TooltipContent>
+              </Tooltip>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 }
@@ -182,10 +219,10 @@ function Sidebar({
   const { state, aiStatus, aiStatusReady } = useCareerPilot();
   const targetRole = state.profile.targetRole || "Target role not set";
   return (
-    <div className="flex h-full flex-col bg-card">
+    <div className="flex h-full flex-col bg-card/80 backdrop-blur-xl">
       <div
         className={cn(
-          "flex h-[72px] shrink-0 items-center border-b border-border px-4",
+          "flex h-[72px] shrink-0 items-center border-b border-border/80 px-4",
           collapsed ? "justify-center" : "justify-between",
         )}
       >
@@ -466,10 +503,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const parent = pathname === "/" ? "Workspace" : "CareerPilot";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-30 hidden shrink-0 border-r border-border bg-card transition-[width] duration-200 lg:block",
+          "fixed inset-y-0 left-0 z-30 hidden shrink-0 border-r border-border/80 bg-card/85 backdrop-blur-xl transition-[width] duration-200 lg:block",
           collapsed ? "w-[78px]" : "w-[264px]",
         )}
       >
@@ -481,11 +518,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <div
         className={cn(
-          "min-h-screen transition-[padding] duration-200",
+          "relative min-h-screen transition-[padding] duration-200",
           collapsed ? "lg:pl-[78px]" : "lg:pl-[264px]",
         )}
       >
-        <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur-md">
+        <header className="glass-bar sticky top-0 z-20 border-b border-border/80">
           <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild>
@@ -527,11 +564,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main>{children}</main>
+        <main className="relative z-10">{children}</main>
 
-        <footer className="border-t border-border/70 px-4 py-5 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-2 text-[11px] text-muted-foreground/80 sm:flex-row">
-            <p>CareerPilot AI · Your Career. Your Voice. Your Roadmap.</p>
+        <footer className="border-t border-border/70 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-2 text-center text-[11px] text-muted-foreground/80 sm:flex-row sm:text-left">
+            <p className="font-medium text-muted-foreground/70">
+              CareerPilot AI · Your Career. Your Voice. Your Roadmap.
+            </p>
             <p>
               AI estimates are guidance, not verified certification. Job
               descriptions are user-supplied.

@@ -92,7 +92,7 @@ function SetupCard() {
               <AIEngineBadge />
             </div>
             <h1 className="max-w-2xl text-balance text-3xl font-semibold tracking-[-0.035em] text-foreground sm:text-4xl">
-              Your career shouldn’t be a guess.
+              Your career shouldn’t be a <span className="text-gradient">guess</span>.
             </h1>
             <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
               CareerPilot compares your real skills and resume against a job
@@ -180,7 +180,7 @@ function MetricCard({
     sky: "border-sky-100 bg-sky-50 text-sky-700",
   };
   return (
-    <Card className="p-5">
+    <Card className="card-hover p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs font-medium text-muted-foreground">{label}</p>
@@ -306,7 +306,7 @@ export default function DashboardPage() {
               <AIEngineBadge />
             </div>
             <h1 className="mt-3 text-balance text-2xl font-semibold tracking-[-0.03em] text-foreground sm:text-[30px]">
-              {greeting}, {firstName}. Let’s move the needle.
+              {greeting}, {firstName}. Let’s move the <span className="text-gradient">needle</span>.
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
               {analysis
@@ -335,9 +335,15 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="flex shrink-0 items-center gap-6 rounded-xl border border-border bg-white/80 p-5 shadow-sm backdrop-blur-sm">
+          <div className="flex shrink-0 items-center gap-6 rounded-xl border border-border bg-white/80 p-5 shadow-sm backdrop-blur-sm sm:gap-6">
             <div className="relative h-[112px] w-[112px]">
               <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
+                <defs>
+                  <linearGradient id="readiness-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="hsl(243 54% 55%)" />
+                    <stop offset="100%" stopColor="hsl(199 89% 55%)" />
+                  </linearGradient>
+                </defs>
                 <circle
                   cx="60"
                   cy="60"
@@ -351,7 +357,7 @@ export default function DashboardPage() {
                   cy="60"
                   r="50"
                   fill="none"
-                  stroke="#6366f1"
+                  stroke="url(#readiness-gradient)"
                   strokeWidth="9"
                   strokeLinecap="round"
                   strokeDasharray={`${(prep / 100) * 314.16} 314.16`}

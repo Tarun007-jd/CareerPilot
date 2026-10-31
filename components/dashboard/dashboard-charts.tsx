@@ -20,11 +20,12 @@ import type {
 import { calculateApplicationStats, formatDate } from "@/lib/utils";
 
 const chartTooltipStyle = {
-  borderRadius: 10,
+  borderRadius: 12,
   border: "1px solid hsl(226 25% 91%)",
-  boxShadow: "0 8px 24px rgba(15, 23, 42, 0.08)",
+  background: "hsl(0 0% 100% / 0.96)",
+  boxShadow: "0 12px 32px -12px rgba(15, 23, 42, 0.18)",
   fontSize: 12,
-  padding: "8px 10px",
+  padding: "8px 12px",
 };
 
 export function SkillReadinessChart({ gaps }: { gaps: SkillGap[] }) {
