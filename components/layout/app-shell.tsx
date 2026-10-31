@@ -88,7 +88,12 @@ function isActive(pathname: string, href: string) {
 function BrandMark() {
   return (
     <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-      <Compass className="h-[19px] w-[19px]" strokeWidth={2.25} />
+      <img
+        src="/logo.png"
+        alt="CareerPilot AI"
+        className="h-[19px] w-[19px] object-contain"
+        loading="lazy"
+      />
       <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-400" />
     </span>
   );
