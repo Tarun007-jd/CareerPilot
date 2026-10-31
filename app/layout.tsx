@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description:
     "Voice-first AI career coach for students and early-career professionals. Map skill gaps from real job descriptions, build adaptive learning plans, and track your path to the role you want.",
   applicationName: "CareerPilot AI",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
   keywords: [
     "career coach",
     "AI career",
