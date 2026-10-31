@@ -89,10 +89,11 @@ function BrandMark() {
   return (
     <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
       <img
-        src="/logo.png"
+        src="/logo.jpg"
         alt="CareerPilot AI"
-        className="h-[19px] w-[19px] object-contain"
+        className="h-[19px] w-[19px] object-contain rounded-lg"
         loading="lazy"
+        style={{ objectFit: 'contain' }}
       />
       <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-card bg-emerald-400" />
     </span>
